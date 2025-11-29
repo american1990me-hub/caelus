@@ -1,0 +1,38 @@
+{
+  "name": "basic_vocab_session",
+  "steps": [
+    {
+      "action": "introduce_vocab",
+      "word": "hello",
+      "language": "en",
+      "definition": "a greeting",
+      "example": "Hello, how are you?",
+      "concept_id": "concept:greeting"
+    },
+    {
+      "action": "introduce_vocab",
+      "word": "apple",
+      "language": "en",
+      "definition": "a round fruit with red or green skin",
+      "example": "I eat an apple every morning.",
+      "concept_id": "concept:apple"
+    },
+    {
+      "action": "puzzle_vocab_mcq",
+      "word": "hello"
+    },
+    {
+      "action": "puzzle_vocab_mcq",
+      "word": "apple"
+    },
+    {
+      "action": "puzzle_vocab_cloze",
+      "word": "hello"
+    },
+    {
+      "action": "puzzle_grammar_order",
+      "sentence": "I eat apples.",
+      "language": "en"
+    }
+  ]
+}

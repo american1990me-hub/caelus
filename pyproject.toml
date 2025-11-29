@@ -1,0 +1,7 @@
+[project]
+name = "caelus"
+version = "0.1.0"
+dependencies = [
+    "numpy>=1.24,<2.0",
+    "cryptography>=42.0.0",
+]

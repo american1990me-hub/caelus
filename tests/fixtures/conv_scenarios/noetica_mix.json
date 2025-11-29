@@ -1,0 +1,46 @@
+{
+  "name": "noetica_mixed_session",
+  "steps": [
+    {
+      "action": "introduce_vocab",
+      "word": "coherare",
+      "language": "noetica-protolatin",
+      "definition": "to bind or weave coherence",
+      "example": "Nos coherare campum mentis.",
+      "concept_id": "sem:coherence_bind"
+    },
+    {
+      "action": "introduce_vocab",
+      "word": "glyphos",
+      "language": "noetica-glyph",
+      "definition": "a symbol carrying structured meaning",
+      "example": "Glyphos Δ, Ω, Ψ mark roles in Noetica.",
+      "concept_id": "sem:noetica_glyph"
+    },
+    {
+      "action": "introduce_vocab",
+      "word": "coherence",
+      "language": "en",
+      "definition": "degree of structured alignment in a field or thought",
+      "example": "High coherence means the system behaves in a structured way.",
+      "concept_id": "sem:coherence_general"
+    },
+    {
+      "action": "puzzle_vocab_mcq",
+      "word": "coherare"
+    },
+    {
+      "action": "puzzle_vocab_mcq",
+      "word": "glyphos"
+    },
+    {
+      "action": "puzzle_vocab_cloze",
+      "word": "coherence"
+    },
+    {
+      "action": "puzzle_grammar_order",
+      "sentence": "Nos coherare glyphos.",
+      "language": "noetica-protolatin"
+    }
+  ]
+}

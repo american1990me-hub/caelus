@@ -1,0 +1,3 @@
+[console_scripts]
+caelus = caelus.cli.main:main
+caelus-coherence = caelus.cli.coherence:main
