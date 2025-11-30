@@ -11,34 +11,71 @@ export interface Gate5Turn {
   meta: any;
 }
 
-export interface Gate5Response {
-  session_id: string;
-  turns: Gate5Turn[];
-}
-
 export interface CACEMetrics {
-  session_id: string;
   layers: any[];
-  summaries: any[];
   policy_updates: any[];
 }
 
-const API_BASE = import.meta.env.VITE_PHASELOOM_API || "http://localhost:8000";
-
-export async function fetchSessions(): Promise<SessionInfo[]> {
-  const res = await fetch(`${API_BASE}/api/sessions`);
-  if (!res.ok) throw new Error("Failed to fetch sessions");
-  return await res.json();
+// Correctly defined Gate5Metrics interface
+export interface Gate5Metrics {
+  image_url: string;
+  summary: {
+    gamma_final: number;
+    c_self_final: number;
+  };
+  turns: Gate5Turn[];
 }
 
-export async function fetchGate5(sessionId: string): Promise<Gate5Response> {
-  const res = await fetch(`${API_BASE}/api/metrics/gate5/${sessionId}`);
-  if (!res.ok) throw new Error("Failed to fetch Gate5 metrics");
-  return await res.json();
+export interface SessionReport {
+  summary: {
+    session_id: string;
+    total_payloads: number;
+    num_nodes: number;
+    num_edges: number;
+    num_sessions: number;
+    num_turns: number;
+  };
+  image_url: string;
+  gate5: Gate5Metrics; // Using the new Gate5Metrics interface
+  cace: CACEMetrics;
 }
 
-export async function fetchCACE(sessionId: string): Promise<CACEMetrics> {
-  const res = await fetch(`${API_BASE}/api/metrics/cace/${sessionId}`);
-  if (!res.ok) throw new Error("Failed to fetch CACE metrics");
-  return await res.json();
+const API_BASE = '/api';
+
+// Function to start a new Caelus session
+export async function startCaelusSession(): Promise<{ message: string }> {
+  const response = await fetch(`${API_BASE}/caelus/start`, {
+    method: 'POST',
+  });
+
+  const text = await response.text();
+  try {
+    const data = JSON.parse(text);
+    if (!response.ok) {
+      throw new Error(data.detail || 'Failed to start Caelus session');
+    }
+    return data;
+  } catch (e) {
+    // Re-throw with more context
+    throw new Error(`Failed to parse JSON response from server. Status: ${response.status}. Response: ${text}`);
+  }
+}
+
+
+// Updated listSessions function signature
+export async function listSessions(): Promise<SessionInfo[]> {
+  const response = await fetch(`${API_BASE}/sessions`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch sessions');
+  }
+  return response.json();
+}
+
+// Added getSessionReport function
+export async function getSessionReport(sessionId: string): Promise<SessionReport> {
+  const response = await fetch(`${API_BASE}/sessions/${sessionId}/report`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch report for session ${sessionId}`);
+  }
+  return response.json();
 }

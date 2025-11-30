@@ -12,5 +12,11 @@ class PhaseLoomConfig:
 def load_config() -> PhaseLoomConfig:
     # v1: simple env-var or default path
     import os
-    base = os.environ.get("PHASELOOM_OMEGA_DIR", "./omega_logs")
-    return PhaseLoomConfig(omega_dir=Path(base).expanduser().resolve())
+    # The run_loop.py script saves ledger files to the `ledgers` directory.
+    base = os.environ.get("PHASELOOM_OMEGA_DIR", "./ledgers")
+    config = PhaseLoomConfig(omega_dir=Path(base).expanduser().resolve())
+    
+    # Ensure the omega_dir exists
+    config.omega_dir.mkdir(parents=True, exist_ok=True)
+    
+    return config

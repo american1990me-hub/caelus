@@ -13,6 +13,7 @@ from .model import (
     GraphEdge,
 )
 
+
 def build_conversation_graph_from_payloads(payloads: List[Dict[str, Any]]) -> ConversationGraph:
     sessions: List[GraphNode] = []
     turns: List[GraphNode] = []
@@ -110,11 +111,20 @@ def build_conversation_graph_from_payloads(payloads: List[Dict[str, Any]]) -> Co
 
     return ConversationGraph(sessions=sessions, turns=turns, edges=edges)
 
-def build_fabric_from_omega(ledger_path: Path, fabric_id: str, version: str = "1.0") -> CaelusGraphFabric:
+
+def build_fabric_from_omega(
+    ledger_path: Path,
+    fabric_id: str,
+    version: str = "1.0",
+    payload_limit: int | None = None,
+) -> CaelusGraphFabric:
     """Build a CaelusGraphFabric from a SignedOmegaLedger file."""
     payloads = []
     with ledger_path.open("r", encoding="utf-8") as f:
-        for line in f:
+        for i, line in enumerate(f):
+            if payload_limit and i >= payload_limit:
+                print(f"Stopping at payload limit: {payload_limit}")
+                break
             try:
                 payloads.append(json.loads(line)["payload"])
             except (json.JSONDecodeError, KeyError):

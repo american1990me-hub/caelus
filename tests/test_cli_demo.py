@@ -1,16 +1,21 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
+import sys
 from pathlib import Path
 
 
 def test_cli_demo_coherence_produces_demo_entries(tmp_path: Path) -> None:
     ledger_path = tmp_path / "omega_demo.log"
 
+    env = os.environ.copy()
+    env["PYTHONPATH"] = "."
+
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "-m",
             "caelus.cli.main",
             "demo-coherence",
@@ -22,6 +27,7 @@ def test_cli_demo_coherence_produces_demo_entries(tmp_path: Path) -> None:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
+        env=env,
     )
     assert result.returncode == 0, f"demo-coherence failed: {result.stderr}"
     assert ledger_path.exists()
